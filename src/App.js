@@ -7,7 +7,7 @@ const workers = Array(navigator.hardwareConcurrency - 1)
 
 export default () => {
   const [tasks, setTasks] = useState(
-    Array(navigator.hardwareConcurrency).fill(false)
+    Array(navigator.hardwareConcurrency - 1).fill(false)
   )
   const [threadDone, setThreadDone] = useState(null)
 
