@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Worker from 'workerize-loader!./worker' // eslint-disable-line import/no-webpack-loader-syntax
 
-const workers = Array(navigator.hardwareConcurrency)
+const workers = Array(navigator.hardwareConcurrency - 1)
   .fill()
   .map(() => new Worker())
 
