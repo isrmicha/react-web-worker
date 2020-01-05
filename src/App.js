@@ -7,9 +7,9 @@ const workers = Array(workersNumber)
   .fill()
   .map(() => new Worker())
 
-const payload = Array(10000)
+const payload = Array(10000000)
   .fill()
-  .map(() => Math.round(Math.random() * 1000))
+  .map(() => Math.round(Math.random() * 10000))
 
 export default () => {
   const [tasks, setTasks] = useState(Array(workersNumber).fill(false))
@@ -28,7 +28,7 @@ export default () => {
           : payload.splice(0, splittedPayload)
 
       worker.expensive(currentPayload).then(time => {
-        console.log(`Thread ${index} done in ${time}s`)
+        console.log(`Thread ${index} done in ${time}ms`)
         setThreadDone(index)
       })
     }
