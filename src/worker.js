@@ -1,7 +1,7 @@
-export const expensive = (time, index) => {
+export const expensive = payload => {
   const start = Date.now()
-  let count = 0
-  while (Date.now() - start < time) count++
-
-  return count
+  payload.forEach(number =>
+    console.log(`${number} => I/O OPERATIONS SLOW THE PERFORMANCE!`)
+  )
+  return Date.now() - start
 }
