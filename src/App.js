@@ -19,10 +19,13 @@ export default () => {
     setTasks(Object.assign([...tasks], { [threadDone]: true }))
   }, [threadDone])
   useEffect(() => {
+    const splittedPayload = payload.length / workersNumber
+    console.log(splittedPayload)
     for (const [index, worker] of workers.entries()) {
-      const currentPayload = payload
-        .slice(0, payload.length / workersNumber)
-        .splice(0, payload.length / workersNumber)
+      const currentPayload =
+        index + 1 === workersNumber
+          ? payload
+          : payload.splice(0, splittedPayload)
 
       worker.expensive(currentPayload).then(time => {
         console.log(`Thread ${index} done in ${time}s`)
