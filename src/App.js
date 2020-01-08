@@ -1,42 +1,43 @@
 import React, { useState, useEffect } from 'react'
-import Worker from 'workerize-loader!./worker' // eslint-disable-line import/no-webpack-loader-syntax
+import exec from './worker'
+import styled from 'styled-components'
 
-const workersNumber = navigator.hardwareConcurrency - 1
-
-const workers = Array(workersNumber)
-  .fill()
-  .map(() => new Worker())
-
-const payload = Array(10000000)
+const payload = Array(1000)
   .fill()
   .map(() => Math.round(Math.random() * 10000))
 
-export default () => {
-  const [tasks, setTasks] = useState(Array(workersNumber).fill(false))
-  const [threadDone, setThreadDone] = useState(null)
-
+const App = () => {
+  const [tasks, setTasks] = useState(null)
+  const [rotate, setRotate] = useState(0)
+  const withoutWebWorkers = () => setTasks(payload.map(data => data ** 2))
+  const withWebWorkers = () =>
+    exec(Object.assign([], payload), arr => arr.map(data => data ** 2))
+      .then(res => setTasks(res))
+      .catch(err => console.log(err))
   useEffect(() => {
-    setTasks(Object.assign([...tasks], { [threadDone]: true }))
-  }, [threadDone])
-  useEffect(() => {
-    const splittedPayload = payload.length / workersNumber
-    console.log(splittedPayload)
-    for (const [index, worker] of workers.entries()) {
-      const currentPayload =
-        index + 1 === workersNumber
-          ? payload
-          : payload.splice(0, splittedPayload)
+    setTimeout(() => setRotate(rotate + 15), 25)
+  }, [rotate])
 
-      worker.expensive(currentPayload).then(time => {
-        console.log(`Thread ${index} done in ${time}ms`)
-        setThreadDone(index)
-      })
-    }
-  }, [])
-
-  return tasks.map((task, index) => (
-    <div key={`${index}-${task}`}>
-      Task {index} {task ? 'done' : 'running'}
+  return (
+    <div>
+      <p>Choose :</p>
+      <StyledDiv rotate={rotate} />
+      <button onClick={withoutWebWorkers} style={{ margin: 10 }}>
+        Main Thread (withoutWebWorkers)
+      </button>
+      <button onClick={withWebWorkers}>Multiple Thread (withWebWorkers)</button>
+      {tasks &&
+        tasks.map((task, index) => <p key={`${task}-${index}`}>{task}</p>)}
     </div>
-  ))
+  )
 }
+
+export default App
+
+const StyledDiv = styled.div`
+  width: 250px;
+  height: 50px;
+  transform: rotate(${({ rotate }) => rotate}deg);
+  background-color: red;
+  margin: 100px;
+`
