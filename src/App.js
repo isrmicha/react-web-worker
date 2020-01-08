@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import exec from './worker'
 
-const payload = Array(10000)
+const payload = Array(100000)
   .fill()
   .map(() => Math.round(Math.random() * 10000))
 
@@ -30,7 +30,7 @@ const App = () => {
         Main Thread (withoutWebWorkers)
       </button>
       <button onClick={withWebWorkers}>Multiple Thread (withWebWorkers)</button>
-      {time && <p>tooks {time} ms</p>}
+      {time && <p>tooks {time} </p>}
       {tasks &&
         tasks.map((task, index) => <p key={`${task}-${index}`}>{task}</p>)}
     </div>
