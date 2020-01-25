@@ -23,5 +23,6 @@ export default async (payload, func) => {
     )
   }
   const result = await Promise.all(results)
+  workers.forEach(worker => worker.terminate())
   return result.flat(Infinity)
 }
