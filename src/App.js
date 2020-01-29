@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 import exec from './worker'
 
-const payload = Array(100000)
+const payload = Array(1000)
   .fill()
   .map(() => Math.round(Math.random() * 10000))
+
+function execThread (arr = []) { return arr.map(data => data ** 2) }
 
 const App = () => {
   const [tasks, setTasks] = useState(null)
@@ -15,7 +17,7 @@ const App = () => {
   }
   const withWebWorkers = () => {
     const initialTime = Date.now()
-    exec(Object.assign([], payload), arr => arr.map(data => data ** 2)).then(
+    exec(Object.assign([], payload), execThread).then(
       res => {
         setTime(Date.now() - initialTime)
         setTasks(res)

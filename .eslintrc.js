@@ -22,5 +22,6 @@ module.exports = {
     'react'
   ],
   rules: {
+    'no-new-func': 0
   }
 }

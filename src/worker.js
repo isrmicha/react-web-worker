@@ -19,7 +19,7 @@ export default async (payload, func) => {
 
     results[index] = worker.executeWorkerFunction(
       currentPayload,
-      func.toString()
+      `(${func.toString()})`
     )
   }
   const result = await Promise.all(results)
