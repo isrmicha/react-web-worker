@@ -5,7 +5,7 @@ const payload = Array(1000)
   .fill()
   .map(() => Math.round(Math.random() * 10000))
 
-function execThread (arr = []) { return arr.map(data => data ** 2) }
+function execThread (arr) { return arr.map(data => data ** 2) }
 
 const App = () => {
   const [tasks, setTasks] = useState(null)
